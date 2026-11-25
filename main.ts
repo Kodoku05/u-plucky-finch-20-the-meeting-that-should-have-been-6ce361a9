@@ -1,5 +1,7 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
+import { join } from 'node:path';
 
+const MAX_LINE_LENGTH = 200;
 const LINE = "The CEO booked a room, ordered coffee for twelve, and opened the meeting with his email's subject line: 'No action required.'";
 
 /* Judge criteria:
@@ -10,10 +12,10 @@ const LINE = "The CEO booked a room, ordered coffee for twelve, and opened the m
  * 5. Room booking, coffee, and a CEO opening feel like real meetings.
  */
 const characterCount = Array.from(LINE).length;
-if (characterCount < 1 || characterCount > 200 || !LINE.trim() || /[\r\n\u0085\u2028\u2029]/u.test(LINE)) {
+if (characterCount < 1 || characterCount > MAX_LINE_LENGTH || !LINE.trim() || /[\r\n\u0085\u2028\u2029]/u.test(LINE)) {
   throw new Error('Entry must contain 1–200 characters, non-whitespace text, and no newlines.');
 }
 
 const outputDir = process.env.MAKEFUN_OUTPUT_DIR ?? '/output';
 mkdirSync(outputDir, { recursive: true });
-writeFileSync(`${outputDir}/entry.txt`, LINE, 'utf8');
+writeFileSync(join(outputDir, 'entry.txt'), LINE, 'utf8');
